@@ -4,15 +4,15 @@ from tensorflow.keras.layers import MaxPool2D, Conv2D, BatchNormalization,Activa
 from tensorflow.keras.models import Model, Sequential
 
 import numpy as np
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 
 cifars=tf.keras.datasets.cifar10
 
 (xtrain,ytrain),(xtest,ytest)=cifars.load_data()
 xtrain, xtest=xtrain/255.0,xtest/255.0
 class BaseLine(Model):
-    def __init__(self, *args, **kwargs):
-        super(BaseLine, self).__init__(*args, **kwargs)
+    def __init__(self):
+        super(BaseLine, self).__init__()
         self.c1=Conv2D(filters=6,kernel_size=(5,5),padding='same')#c
         self.b1=BatchNormalization()
         self.a1=Activation('relu')
@@ -41,8 +41,7 @@ model = BaseLine()
 model.compile(
     optimizer='adam',
     loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
-    mertrics="sparse_categorical_accuracy"
-    
+    metrics=['sparse_categorical_accuracy']
     )
 check_point_path = "./checkpoint/baseline.ckpt"
 if os.path.exists(check_point_path + ".index"):
